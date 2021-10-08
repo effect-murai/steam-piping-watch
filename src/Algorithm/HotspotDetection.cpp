@@ -198,19 +198,19 @@ int ResultData::detectHotspotImpl(int id, POINT **hotspots, float threshold) {
 							if (_y < 0 || _y >= height) {
 								continue;
 							}
-							for (int i = -dist; i <= dist; i++) {
-								if (i <= -dist || i == dist || j == -dist
-										|| j == dist) {
-									int _x = x + i;
-									if (_x < 0 || _x >= width) {
-										continue;
-									}
-									if (_tempData[_x + _y * width] > th1) {
+							//for (int i = -dist; i <= dist; i++) {
+							//	if (i <= -dist || i == dist || j == -dist
+							//			|| j == dist) {
+							//		int _x = x + i;
+							//		if (_x < 0 || _x >= width) {
+							//			continue;
+							//		}
+							//		if (_tempData[_x + _y * width] > th1) {
 										// 一応枠外もチェックする
-										lcount++;
-									}
-								}
-							}
+							//			lcount++;
+							//		}
+							//	}
+							//}
 						}
 					}
 					if (lcount < 5 && ok == 1) {
@@ -269,20 +269,20 @@ int ResultData::detectHotspotImpl(int id, POINT **hotspots, float threshold) {
 						if (_y < 0 || _y >= height) {
 							continue;
 						}
-						for (int i = -dist; i <= dist; i++) {
-							if (i <= -dist || i == dist || j == -dist
-									|| j == dist) {
-								int _x = x + i;
-								if (_x < 0 || _x >= width) {
-									continue;
-								}
-								// 太陽光判別温度を固定
-								if (_tempData[_x + _y * width] > th) {
+						//for (int i = -dist; i <= dist; i++) {
+						//	if (i <= -dist || i == dist || j == -dist
+						//			|| j == dist) {
+						//		int _x = x + i;
+						//		if (_x < 0 || _x >= width) {
+						//			continue;
+						//		}
+						//		// 太陽光判別温度を固定
+						//		if (_tempData[_x + _y * width] > th) {
 									// 一応枠外もチェックする
-									lcount++;
-								}
-							}
-						}
+						//			lcount++;
+						//		}
+						//	}
+						//}
 					}
 				}
 				if (lcount < 5 && ok == 1) {
