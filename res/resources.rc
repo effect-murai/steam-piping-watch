@@ -1,0 +1,568 @@
+﻿#include <windows.h>
+#include <commctrl.h>
+#include "resource.h"
+#include "version.h"
+
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(65001) // UTF-8
+
+IDI_APP_ICON ICON "YanaiDrone.ico"
+
+1 VERSIONINFO
+    FILEVERSION     APP_RELEASE_FILE_VERSION
+    PRODUCTVERSION  APP_RELEASE_FILE_VERSION
+    FILEOS          VOS__WINDOWS32
+    FILETYPE        VFT_APP
+    FILESUBTYPE     0
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "041104B0"
+        {
+            VALUE "CompanyName",        "柳井電機工業株式会社"
+            VALUE "FileDescription",    "画像検査ソフト"
+            VALUE "FileVersion",        APP_VERSION
+            VALUE "LegalCopyright",     APP_COPYRIGHT "柳井電機工業株式会社"
+            VALUE "ProductName",        "太陽光プラント点検保守支援システム"
+            VALUE "ProductVersion",     APP_VERSION
+            VALUE "InternalName",       "DronePVWatch"
+            VALUE "OriginalFilename",   "dronepvwatch.exe"
+        }
+    }
+
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0411, 0x04B0
+    }
+}
+
+IDR_REPORT_TEMPLATE				RCDATA		"ReportTemplate.xlsm"
+IDR_WHOLE_PIC_WITH_PANEL		RCDATA		"WholePictureWithPanelTemple.xlsm"
+IDR_REPORT_TEMPLATE_TRIAL		RCDATA		"ReportTemplateTrial.xlsm"
+IDR_WHOLE_PIC_WITH_PANEL_TRIAL	RCDATA		"WholePictureWithPanelTempleTrial.xlsm"
+
+#ifdef _WIN64
+#   define ARCH "amd64"
+#else
+#   define ARCH "x86"
+#endif
+
+1 24 "Drone.exe." ARCH ".manifest"
+
+STRINGTABLE
+BEGIN
+	IDS_NULL					""
+	IDS_APP_TITLE				"画像検査ソフト"
+	IDS_APP_TITLE_FORMAT		"画像検査ソフト - %s"
+	IDS_APP_TITLE_TRIAL			"【体験版】画像検査ソフト"
+	IDS_APP_TITLE_FORMAT_TRIAL	"【体験版】画像検査ソフト - %s"
+	IDS_ACTIVATION_ERROR		"ライセンス認証に失敗しました。認証サーバとの通信を確認下さい。\n体験版として動作します。"
+	IDS_ACTIVATION_ERROR_TITLE	"ライセンス認証 ワーニング"
+	IDS_SEL_FOLDER				"PV監視データフォルダ選択"
+	IDS_DATA_CONTENT			"選択データ内容"
+	IDS_START_DATE				"監視日時(始):"
+	IDS_END_DATE				"監視日時(終):"
+	IDS_PICTURE_COUNT			"撮影枚数:"
+	IDS_PICTURE_COUNT_SUFFIX	"枚"
+	IDS_HOTSPOT_SUM_COUNT		"ホットスポット総数:"
+	IDS_TEMP_MAX				"パネル全体最高温度:"
+	IDS_TEMP_AVE				"パネル全体平均温度:"
+	IDS_TEMP_MAX2				"全体最高温度:"
+	IDS_TEMP_AVE2				"全体平均温度:"
+
+	IDS_SELECT_FOLDER_TITLE		"フォルダの選択..."
+	IDS_SELECT_FOLDER			"PV監視データフォルダを指定してください。"
+	IDS_DBLCLICK_MINIMAP		"座標マップ上の点をクリックしてください。"
+	IDS_FILE_NOT_FOUND			"指定したフォルダにはセンサー情報が含まれていません。"
+	IDS_FILE_NOT_FOUND_TITLE	"ファイルが見つかりません。"
+	IDS_FILEPATH_SIZEOVER		"指定したフォルダパスが長すぎる可能性があります。\nより短いパス名となるようにフォルダの場所を移動して下さい。"
+	IDS_TRIAL_SELERR_TITLE		"【体験版】ファイル選択エラー"
+	IDS_TRIAL_SELERR_MESSAGE	"体験版では解析済みデータを選択することはできません。"
+	
+	IDS_VIEW_PICTURE_TYPE		"表示画像"
+	IDS_VISIBLE_PICTURE			"可視光画像"
+	IDS_INFRARED_PICTURE		"赤外線画像"
+	IDS_PANEL_PICTURE			"輪郭画像"
+	IDS_THRESHOLD_TEMP			"前回閾値温度:"
+	IDS_INIT_PICTURE			"画像位置初期化"
+	IDS_INIT_PICTURE_CONF		"すべての画像位置を初期化しますが、よろしいですか？\n（Shiftキーを押しながら【はい】を選択すると、回転・拡大率情報も初期化します）"	
+	IDS_INFRARED_PICTURE_TYPE	"赤外線画像"
+	IDS_INFRARED_MONO			"白黒"
+	IDS_INFRARED_COLOR			"カラー"
+	IDS_CORRECTION_SETTINGS		"GPS補正の設定"
+	IDS_FLIGHT_SPEED			"速度[m/s]:"
+	IDS_CORRECTION_POINTS		"測定点数:"
+	IDS_PICTURE_ROTATION		"表示パラメータ"
+	IDS_FIXING_GIMBAL			"ジンバル固定"
+	IDS_LATITUDE				"緯度:"
+	IDS_LONGITUDE				"経度:"
+	IDS_DIRECTION_SHOOTING		"撮影方位[°]"
+	IDS_HEIGHT_SETTINGS			"想定高度[m]"
+	IDS_USE_GPS_HEIGHT			"GPS値を使用"
+	IDS_INPUT_HEIGHT			"値を指定[m]"
+	IDS_DBLCLICK_CANVAS			"クリック:前面表示\nダブルクリック:拡大表示"
+	IDS_TEMPERATURE				"温度:"
+	IDS_OUT_OF_PANELS			"ブロック範囲外"
+	IDS_HOTSPOT_DETAIL			"ホットスポット詳細"
+	IDS_DEGREES_SUFFIX			"[°]"
+	IDS_ERROR					"エラー"
+	IDS_CACHE_PATH				"cache"
+	IDS_HEIGHT_SETTINGS_ERR		"想定高度は150mまでしか設定できません。"
+	IDS_PANELSIZE_ERR			"パネルサイズは0.001以上しか設定できません。"
+	IDS_PROGRESSBAR_TITLE		"%s - %d%% 完了."
+	IDS_PROGRESSBAR_TITLE2		"%s - %d%% 完了. (残り約%d秒)"
+	IDS_PROGRESSBAR_TITLE3		"%s - %d%% 完了. (所要時間約%d秒)"
+	IDS_PROCESSING_TITLE		"処理中"
+	IDS_CANCEL_PROCESSING		"処理を中止しますか？"
+	IDS_PANEL_TEMPERATURE       "パネル平均温度:"
+    IDS_UNCALCULATED            "未算出"
+
+	IDS_CREATING_WHOLE_PICTURE	"俯瞰合成画像を作成しています"
+	IDS_UPDATING_HOTSPOT_INFO	"ホットスポット情報を更新しています"
+	IDS_DETECTING_HOTSPOT		"ホットスポットを解析しています"
+	IDS_LOADING					"データを読み込んでいます"
+	IDS_CHANGING				"データを変換しています"
+	IDS_WRITING_HOTSPOT_DETAIL	"ホットスポットの詳細データを生成しています"
+
+	IDS_CHANGEDATACHECK			"データ不正のため、変換処理を実行できません。"
+
+	IDS_CHANGEDATA_PICERROR_TITLE	"データ変換エラー"
+
+	IDS_DATASERCH_ERROR			"データフォルダの指定に誤りがあります。\n指定するデータフォルダを再度確認して下さい。"
+	
+	IDS_GPS_NOT_FOUNT_TITLE		"データ異常"
+
+	IDS_ERROR_CANT_OPEN_FOLDER      "データフォルダが開けませんでした。\n指定するデータフォルダを再度確認して下さい。"
+    IDS_ERROR_NO_INFRARED           "赤外画像データがありません。\n指定するデータフォルダを再度確認して下さい。"
+    IDS_ERROR_TOO_MANY_INFRARED     "ファイル数が多すぎます。"
+    IDS_ERROR_VISIBLE_COUNT         "可視光画像データと赤外画像データが対になっていません。\nデータ内容を確認してください。"
+    IDS_ERROR_INVALID_INFRARED      "赤外画像データに異常があるため、変換処理を実行できません。"
+    IDS_ERROR_INVALID_VISIBLE       "可視光画像データの作成に失敗しました。"
+    IDS_ERROR_CREATE_FLIGHT_DATA    "飛行データの作成に失敗しました。"
+
+	IDS_DETECTING_KEYPOINT		"特徴点を検出しています"
+	IDS_DETECTING_KEYPOINT_CONF	"特徴点を検出しますがよろしいですか？\n　・既に検出しているホットスポット及び特徴点が消えることはありません\n　・赤外線画像の色合いの設定が検出結果に影響を与えます。\n　・特徴点がうまく出ない場合、\n　　白黒モードにした上で色合い設定を調整してください\n　・HOMEかホットスポット補正の状態で白黒モードにし、\n　　色合い設定を調整してください"
+
+	IDS_PANELTEMP_ANALYSIS		"パネル温度を検出しています"
+
+	IDS_HOTSPOT_DETECTION		"ホットスポット解析"
+	IDS_HOTSPOT_DETECTION_TITLE	"ホットスポット検出"
+	IDS_STOP_HOTSPOT_DETECT		"ホットスポット検出を中断しますか?"
+
+	IDS_HOTSPOT_ALLDEL			"ホットスポット全削除"
+	IDS_HOTSPOT_ALLDEL_CONF		"ホットスポット全削除をしてよろしいですか?"
+
+	IDS_KEYPOINT_ALLDEL			"特徴点全削除"
+	IDS_KEYPOINT_ALLDEL_CONF	"特徴点を全削除してよろしいですか?"
+
+	IDS_HOTSPOT_AUTOLINK		"特徴点検出"
+	IDS_SET_AREA_TITLE			"解析範囲設定"
+	IDS_SET_AREA_CLEAR			"クリア"
+	IDS_SET_AREA_DIAGONAL 	    "対角線"
+	IDS_SET_AREA_STRAIGHT		"直線"
+
+	IDS_PANEL_SETALL			"全体設定"
+	IDS_PANEL_SETONE			"個別設定"
+	IDS_PANEL_RESET_BUTTON		"データ初期化"
+	IDS_PANEL_RESET				"データ初期化"
+	IDS_PANEL_RESET_TITLE		"全体設定の値で戻ります。よろしいですか？"
+
+	IDS_PANEL_SIZE_TITLE		"パネルサイズ[m]"
+	IDS_PANEL_SIZE_X			"×"
+	IDS_CAMERA_ADJUST_TITLE		"画像補正(カメラ特性)"
+	IDS_SHOOTING_DATA_ADJUST	"画像補正(回転、高度)"
+	IDS_HOTSPOT_ADJUST_TITLE	"ホットスポット補正"
+	IDS_SET_NO_TITLE			"管理番号入力"
+	IDS_OUTPUT_TITLE			"報告書出力"
+	IDS_ITEM_OUTPUT_TITLE		"案件情報入力"
+	IDS_PANEL_SIZE_DEFAULT_X	"1.500"
+	IDS_PANEL_SIZE_DEFAULT_Y	"1.000"
+	IDS_DEFAULT_HEIGHT          "40"
+
+	IDS_SELECT_PICTURE_TITLE	"画像選択"
+	IDS_PANEL_RETURN			"戻る"
+	IDS_PANEL_HOME				"HOME"
+	IDS_PANEL_MOVE_UP			"↑移動"
+	IDS_PANEL_MOVE_DOWN			"移動↓"
+	IDS_PANEL_MOVE_LEFT			"←移動"
+	IDS_PANEL_MOVE_RIGHT		"移動→"
+	IDS_PANEL_ZOOM_IN			"↑拡大"
+	IDS_PANEL_ZOOM_OUT			"縮小↓"
+	IDS_PANEL_ZOOM_ALL			"拡大／縮小 一括適用"
+	IDS_PANEL_ZOOM_ALL_CONF		"すべての画像に同じ値が設定されますが、よろしいですか？"
+	IDS_PANEL_TURN_LEFT			"←回転"
+	IDS_PANEL_TURN_RIGHT		"回転→"
+	IDS_PANEL_PICTURE_PREV		"<< 前画像"
+	IDS_PANEL_PICTURE_NEXT		"次画像 >>"
+	IDS_PANEL_TURN_ALL			"角度一括適用"
+	IDS_PANEL_TURN_ALL_CONF		"すべての画像に同じ値が設定されますが、よろしいですか？"
+	IDS_PANEL_DATASETTING		"データの範囲は0.1~5.0"
+	IDS_PANEL_DATATYPESETTING	"今の値で全部を変わりますか？"
+	IDS_PANEL_DATATYPE_TITLE	"全部変更。"
+
+	IDS_PANEL_INFO_TITLE		"【キー／マウス操作】"
+	IDS_PANEL_INFO_CAMERA		"移動\t\t… 【↑】，【↓】，【←】，【→】\n回転\t\t… 【Ctrl】＋【←】，【→】\n拡大／縮小\t… 【Ctrl】＋【↑】，【↓】"
+	IDS_PANEL_INFO_SHOOTINGDATA	"画像移動\t\t… 【←】，【→】\n回転\t\t… 【Ctrl】＋【←】，【→】\n拡大／縮小\t… 【Ctrl】＋【↑】，【↓】"
+
+	IDS_PANEL_INFO_AREA			"確定(直線モード)\t\t… 【左クリック】\n\n確定(対角線モード)\t\t… 【Shift+左クリック】\n\nキャンセル\t\t\t… 【右クリック】\n\n最終確定\t\t\t… 【左ダブルクリック】"
+	IDS_PANEL_INFO_HOTSPOT		"画像移動\n \t… 【←】，【→】\nホットスポット／特徴点のリンク・キャンセル\n \t… 【左クリック】・【右クリック】\nホットスポット／特徴点の追加\n \t… 【左ダブルクリック】\n\t… 【Alt】＋【左ダブルクリック】\nホットスポット／特徴点の削除\n \t… 【左ダブルクリック】 \n画面拡大\n \t… 【Ctrl】＋【左ダブルクリック】\n画像移動\n \t… 【Shift】＋【左ダブルクリック】"
+	IDS_PANEL_INFO_HOTSPOT2		"\n表示モード変更\n \t… 【ホイール操作】"
+	IDS_PANEL_INFO_HOTSPOT_HIDE	"画像移動\t\t… 【←】，【→】\n別画面表示／画像移動\n \t\t… 【Ctrl】＋【左ダブルクリック】\n表示モード変更\t… 【ホイール操作】"
+	IDS_PANEL_INFO_DISPLAYMASK 	"\n\t\n\t\n\t"
+	
+	IDS_PANEL_INFO_CAMERA_ALLMODE_TITLE		"【注意点】"
+	IDS_PANEL_INFO_CAMERA_ALLMODE_INFO		"全画像に全体設定を反映します。"
+	IDS_PANEL_INFO_SETALL_TITLE		"【注意】"
+	IDS_PANEL_INFO_SETALL_INFO		"全体設定の値を反映います。よろしいですか？"
+
+	IDS_NAVI_DEFAULT			"PV監視データフォルダを指定して下さい。"
+	IDS_NAVI_HOME				"【HOME】\n ドラッグ操作で移動、ホイール操作で拡大／縮小します。\n HOMEボタンで元に戻ります。\n 各補正は、ミニマップ上の点を選択後、 実施して下さい。"
+	IDS_NAVI_CAMERA				"【画像補正(カメラ特性)】\n　赤外線画像を移動(縦、横)、回転、拡大/縮小し、\n　可視光画像に合わせて下さい。\n　補正結果が全画像へ展開されます。"
+	IDS_NAVI_SHOOTINGDATA		"【画像補正(回転、高度)】\n　可視光画像をグリッドに合わせて、回転、拡大/縮小し、\n　グリッド枠内にパネル(3x3)が入るように調整して下さい。\n　※グリッドは表示パラメータに従い表示されます。\n　※全画像に対して本操作を実施して下さい。"
+	IDS_NAVI_AREA				"【解析範囲設定】\n ホットスポットの解析範囲を設定して下さい。"
+	IDS_NAVI_HOTSPOT			"【ホットスポット補正】\n　マウスのホイールを下側にまわし、\n　ホットスポット補正を開始してください。\n \n　※全画像に対して本操作を実施して下さい。"
+	IDS_NAVI_HOTSPOT_1			"【ホットスポット補正】 - Step 1\n　中央の画像と周囲の画像の同じと思われる点を\n　それぞれクリックしてください。すべての画像を結び終えたら、\n　ホイールを下側にまわしてください。\n"
+	IDS_NAVI_HOTSPOT_2			"【ホットスポット補正】 - Step 2\n　追加されたリンクとホットスポットを精査してください。/\n　ホイールを下側にまわすとホットスポットが消え、\n　ホイールを上側にまわすと再び表示されます。\n　間違いがなければ次画像をクリックしてください。"
+	IDS_NAVI_HOTSPOTDEL			"ホットスポット全削除"
+	IDS_NAVI_KEYPOINTDEL		"特徴点全削除"
+	
+	IDS_NAVI_PANELSETTING		"【管理番号入力】\n　2点指定モード　ドラッグ操作でブロック作成\n　4点指定モード　クリック操作でブロック作成\n　コピーモード　ドラッグでブロック選択、Ctrlで作成\n　マウス移動モード　ドラッグ操作でブロック選択、移動"
+	IDS_NAVI_FINISH_ADJUST		"補正が完了したら\n【Ctrl】+【Shift】+【ダブルクリック】をしてください。"
+
+	IDS_HOTSPOT_ADD_FAILURE		"指定したホットスポットはリンクできません。"
+	IDS_HOTSPOT_ADD_FAILURE2	"中央の画像以外のホットスポット同士はリンクできません。"
+	IDS_PANEL_DELETE			"削除"
+	IDS_PANELSETTING_ERROR		"ブロック名を設定してください。"
+	IDS_OUTPUT_MESSAGE			"報告書が作成されました。"
+	IDS_PANEL_NAME_IS_REQUIRED	"<指定なし>"
+	IDS_CSV_FILE				"CSVファイル"
+	IDS_TEXT_FILE				"テキストファイル"
+	IDS_CSV_HOTSPOT_FILENAME	"HotSpotInfo.csv"
+	IDS_CSV_CUSTOMER_FILENAME	"CustomerInfo.csv"
+	IDS_CSV_MACHINE_FILENAME	"MachineInfo.csv"
+	IDS_CSV_ADDDATA_FILENAME	"AddDataInfo.csv"
+	IDS_XLSM_FILE				"Excel マクロ有効ブック"
+	IDS_XLSM_REPORT_FILENAME	"Report.xlsm"
+	IDS_TXT_REPORT2_FILENAME	"Result_Report2_Data.txt"
+	IDS_TXT_WATCHON_FILENAME	"WatchOn_Data.txt"
+	IDS_OUTPUT_ERROR_MESSAGE	"報告書が作成されませんでした。"
+	IDS_REPORT_WEATHER_SUNNY	"晴れ"
+	IDS_REPORT_WEATHER_CLOUDY	"曇り"
+	IDS_ENABLE_HOTSPOT			"ホットスポットではない可能性がありますが、ホットスポットとして確定させてもよろしいですか?"
+	IDS_CONFIRM_DELETE_HOTSPOT	"削除候補のホットスポットが残っています。削除してもよろしいですか?"
+	IDS_CONFIRM_ADJUST_POSITION	"撮影位置補正を実施しますか?"
+	IDS_ALERT_ADJUST_POSITION	"リンクされていない画像があるため、撮影位置補正が実行できません。補正を実施するには再度リンクを確認してください。\nリンクされていない画像を再度補正しますか？"
+	IDS_EXT_IS_NOT_XLSM			"拡張子が違います。"
+
+	IDS_PANEL_INFO_BASE			"ブロック情報"
+	IDS_PANEL_INFO_NAME			"管理番号:"
+	IDS_PANEL_INFO_HOTSPOT_COUNT "ブロック内ホットスポット数:"
+	IDS_PANEL_INFO_PANELSETTING "移動：↑　↓　←　→\nコピー：Ctrl (コピーモードのみ)\n削除：Delete"
+	IDS_SETTINGTYPE		        "設定モード"
+	IDS_POINT2SET				"2点指定モード"
+	IDS_POINT4SET				"4点指定モード"
+	IDS_COPYSELECT				"コピーモード"
+	IDS_MOVESELECT				"マウス移動モード"
+	IDS_NO_INPUT_START			"開始番号が入力されていません。"
+	IDS_NO_INPUT_END			"終了番号が入力されていません。"
+	IDS_NO_INPUT_START_END		"終了番号が開始番号より小さいです。"
+	IDS_NO_V_SPLIT_COUNT		"縦分割数が0または入力されていません。\n1以上を入力してください。"
+	IDS_NO_H_SPLIT_COUNT		"横分割数が0または入力されていません。\n1以上を入力してください。"
+	IDS_SAVE_HOTSPOT_INFO		"ホットスポット数一覧 保存"
+	IDS_SAVE_PANEL_INFO			"管理番号 保存"
+	IDS_LOAD_PANEL_INFO			"管理番号 読込"
+	IDS_ERR_SAVE_PANEL_INFO		"保存に失敗しました。"
+	IDS_ERR_LOAD_PANEL_INFO		"読み込みに失敗しました。"
+	IDS_ERR_ZOOM				"拡大・縮小には0.01倍から5倍までしか設定できません。"
+	IDS_ERR_ZOOM_CONF			"拡大・縮小エラー"
+	IDS_ERR_INPUT_OUT_OF_RANGE	"%%.%dfから%%.%dfの範囲で指定してください。"
+
+	IDS_STATUS_HUE_TITLE		"色合い"
+	IDS_STATUS_TEMP_MAX			"20.00"
+	IDS_STATUS_TEMP_MIN			"5.00"
+	IDS_STATUS_TEMP_SUFFIX		"[℃]"
+	IDS_STATUS_HOTSPOTCOUNT		"ホットスポット\n総数"
+	
+	IDS_CHGREG_TITLE_INFO		"ライセンス認証 インフォメーション"
+	IDS_CHGREG_TITLE_WARNING	"ライセンス認証 ワーニング"
+	IDS_CHGREG_TITLE_ERROR		"ライセンス認証 エラー"
+
+	IDS_CHGREG_LKEYSET_MESSAGE1	"ライセンスキーの登録は管理者モードで実行して下さい。"
+	IDS_CHGREG_LKEYSET_MESSAGE2	"不正なライセンスキーです。入力内容をご確認下さい"
+	IDS_CHGREG_LKEYSET_MESSAGE3	"ライセンス認証に成功しました。"
+	IDS_CHGREG_LKEYSET_MESSAGE4	"ライセンス認証に失敗しました【認証失敗】。\nもう一度、実施して下さい。"
+	IDS_CHGREG_LKEYSET_MESSAGE5	"ライセンス認証に失敗しました【登録失敗】。\nもう一度、実施して下さい。"
+	
+	IDS_CHGREG_LKEYGET_MESSAGE1	"ライセンスキー発行依頼が完了しました。\n今後の手続きについて担当よりご連絡いたします。"
+	IDS_CHGREG_LKEYGET_MESSAGE2	"ライセンスキー発行依頼に失敗しました。\nもう一度、実施して下さい。"
+	
+	IDS_UNIMPLEMENTED			"まだ実装されていないよ"
+	IDS_SORRY					"残念"
+END
+
+//
+// Dialog resources
+//
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_PROGRESS DIALOG 0, 0, 256, 12
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "Dialog"
+FONT 10, "Meiryo"
+{
+    CONTROL         "", IDC_PROGRESS, PROGRESS_CLASS, 0, 0, 0, 256, 12, WS_EX_LEFT
+}
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_PICTURE DIALOG 0, 0, 118, 93
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION ""
+FONT 10, "Meiryo"
+{
+}
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_DETECT_HOTSPOT DIALOG 0, 0, 276, 144
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "ホットスポット検出"
+FONT 10, "Meiryo"
+{
+    DEFPUSHBUTTON   "キャンセル", IDC_DETECT_CANCEL, 200, 80, 55, 15, 0, WS_EX_LEFT
+    LTEXT           "ホットスポットの検出を行います。検出する温度の閾値を入力して解析開始を\n押してください。", 0, 10, 10, 260, 25, SS_LEFT, WS_EX_LEFT
+    CONTROL         "", IDC_DETECT_TEMP_SLIDER, TRACKBAR_CLASS, WS_TABSTOP | TBS_AUTOTICKS | TBS_BOTH, 15, 40, 200, 20, WS_EX_LEFT
+    EDITTEXT        IDC_DETECT_TEMP_EDIT, 225, 45, 25, 12, ES_RIGHT | ES_AUTOHSCROLL | ES_READONLY, WS_EX_LEFT
+    LTEXT           "ここで指定する温度の閾値はパネルの平均温度との温度差です。\nこの値を元に独自の手法でホットスポットと判断します。", 0, 35, 114, 230, 25, SS_LEFT, WS_EX_LEFT
+    LTEXT           "注意）", 0, 10, 114, 21, 9, SS_LEFT, WS_EX_LEFT
+    PUSHBUTTON      "解析開始", IDC_DETECT_OK, 135, 80, 55, 15, 0, WS_EX_LEFT    PUSHBUTTON      "解析開始", IDC_DETECT_OK, 135, 80, 55, 15, 0, WS_EX_LEFT
+    LTEXT           "℃", 0, 255, 50, 8, 9, SS_LEFT, WS_EX_LEFT
+    CTEXT           "0", 0, 10, 60, 25, 15, SS_CENTER, WS_EX_LEFT
+    CTEXT           "[℃]", 0, 220, 60, 20, 10, SS_CENTER, WS_EX_LEFT
+    CTEXT           "0", IDC_DETECT_TEMP_MAX, 195, 60, 25, 15, SS_CENTER, WS_EX_LEFT
+    PUSHBUTTON      "季節:夏", IDC_SUMMER_TEMP, 25, 75, 50, 10, 0, WS_EX_LEFT
+    PUSHBUTTON      "季節:冬", IDC_WINTER_TEMP, 25, 85, 50, 10, 0, WS_EX_LEFT
+    CONTROL         "パネルを検出する", IDC_DETECT_PANEL, "button", BS_AUTOCHECKBOX | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 26, 97, 80, 14
+}
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_PANELSETTING DIALOG 0, 0, 189, 82
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "ブロック設定"
+FONT 10, "Meiryo"
+{
+    LTEXT           "以下のブロック情報を設定してください。", 0, 10, 5, 125, 9, SS_LEFT, WS_EX_LEFT
+    LTEXT           "管理番号", 0, 25, 22, 27, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_PANELSETTING_LINE1, 57, 20, 25, 12, 0, WS_EX_LEFT
+    LTEXT           "-", 0, 82, 22, 8, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_PANELSETTING_START1, 86, 20, 25, 12, ES_NUMBER, WS_EX_LEFT
+    LTEXT           "～", 0, 113, 21, 8, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_PANELSETTING_LINE2, 121, 20, 25, 12, ES_READONLY, WS_EX_LEFT
+    LTEXT           "-", 0, 146, 22, 8, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_PANELSETTING_START2, 150, 20, 25, 12, ES_NUMBER, WS_EX_LEFT
+    
+    EDITTEXT        IDC_PANELSETTING_HEIGHT, 45, 55, 20, 12, ES_NUMBER, WS_EX_LEFT
+    LTEXT           "×", 0, 67, 57, 8, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_PANELSETTING_WIDTH, 75, 55, 20, 12, ES_NUMBER, WS_EX_LEFT
+    
+	PUSHBUTTON      "キャンセル", IDCANCEL, 130, 60, 50, 14, 0, WS_EX_LEFT
+    DEFPUSHBUTTON   "OK", IDOK, 130, 40, 50, 14, 0, WS_EX_LEFT
+}
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_CUSTOMER_INFO DIALOG 0, 0, 292, 214
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "報告書作成用データ登録1"
+FONT 10, "Meiryo"
+{
+    GROUPBOX        "基本情報", 0, 5, 14, 280, 175, 0, WS_EX_LEFT
+    LTEXT           "報告書作成に必要な情報を入力してください。", 0, 10, 5, 155, 9, SS_LEFT, WS_EX_LEFT
+    LTEXT           "顧客名", 0, 25, 25, 21, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_CUSTOMER_NAME, 90, 25, 185, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "発電所名", 0, 25, 40, 34, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_ADDRESS, 90, 40, 185, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "発電所住所", 0, 25, 55, 34, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_PLANT_NAME, 90, 55, 185, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "出力(kW)", 0, 25, 70, 33, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_PLANT_OUTPUT, 90, 70, 35, 12, ES_AUTOHSCROLL | ES_NUMBER, WS_EX_LEFT
+    LTEXT           "パネル枚数(枚)", 0, 25, 85, 55, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_PANEL_COUNT, 90, 85, 35, 12, ES_AUTOHSCROLL | ES_NUMBER, WS_EX_LEFT
+    LTEXT           "パネル型式", 0, 25, 100, 34, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_PANEL_TYPE, 90, 100, 185, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "パネルメーカー", 0, 25, 115, 55, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_PANEL_MAKER, 90, 115, 185, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "天気", 0, 25, 130, 14, 9, SS_LEFT, WS_EX_LEFT
+	COMBOBOX        IDC_CUSTOMER_INFO_WEATHER, 90, 130, 48, 30, CBS_DROPDOWNLIST | CBS_HASSTRINGS, WS_EX_LEFT
+    LTEXT           "飛行担当者", 0, 25, 145, 34, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_FLIGHT_PERSON, 90, 145, 95, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "監視人", 0, 25, 160, 21, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CUSTOMER_INFO_PATROL_PERSON, 90, 160, 95, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "設置年月日", 0, 25, 175, 34, 9, SS_LEFT, WS_EX_LEFT
+    CONTROL         "", IDC_CUSTOMER_INFO_SETTING_DATE, "SysDateTimePick32", WS_CHILD | WS_TABSTOP, 90, 175, 65, 12
+    PUSHBUTTON      "キャンセル", IDCANCEL, 165, 195, 50, 14, 0, WS_EX_LEFT
+    DEFPUSHBUTTON   "OK", IDOK, 75, 195, 50, 14, 0, WS_EX_LEFT
+}
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_MACHINE_INFO DIALOG 0, 0, 301, 179
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "報告書作成用データ登録2"
+FONT 10, "Meiryo"
+{
+    LTEXT           "報告書作成に必要な情報を入力してください。", 0, 10, 5, 155, 9, SS_LEFT, WS_EX_LEFT
+    GROUPBOX        "点検者情報", 0, 15, 14, 280, 45, 0, WS_EX_LEFT
+    LTEXT           "名称", 0, 25, 25, 14, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_MACHINE_INFO_INSPECTOR, 50, 25, 235, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "住所", 0, 25, 45, 21, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_MACHINE_INFO_INSPECTOR_ADDRESS, 50, 45, 235, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    GROUPBOX        "ドローン情報", 0, 15, 60, 280, 45, 0, WS_EX_LEFT
+    LTEXT           "型式", 0, 25, 71, 14, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_MACHINE_INFO_DRONE_TYPE, 50, 71, 95, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "製造番号", 0, 155, 71, 27, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_MACHINE_INFO_DRONE_NUMBER, 190, 71, 95, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "製造年", 0, 25, 91, 21, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_MACHINE_INFO_DRONE_DATE, 50, 91, 95, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    GROUPBOX        "赤外線カメラ情報", 0, 15, 106, 280, 45, 0, WS_EX_LEFT
+    LTEXT           "型式", 0, 25, 117, 14, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_MACHINE_INFO_CAMERA_TYPE, 50, 117, 95, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "製造番号", 0, 155, 117, 27, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_MACHINE_INFO_CAMERA_NUMBER, 190, 117, 95, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    LTEXT           "製造年", 0, 25, 137, 21, 9, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_MACHINE_INFO_CAMERA_DATE, 50, 137, 95, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    PUSHBUTTON      "キャンセル", IDCANCEL, 175, 160, 50, 14, 0, WS_EX_LEFT
+    DEFPUSHBUTTON   "OK", IDOK, 95, 160, 50, 14, 0, WS_EX_LEFT
+}
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_OUTPUT_REPORT DIALOG 0, 0, 320, 80
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "報告書出力"
+FONT 10, "Meiryo"
+{
+    LTEXT           "報告書名を設定後、出力してください。", 0, 10, 5, 125, 10, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_OUTPUTREPORT_FILENAME, 55, 25, 200, 12, ES_AUTOHSCROLL | ES_READONLY, WS_EX_LEFT
+    LTEXT           "報告書名", 0, 10, 25, 27, 9, SS_LEFT, WS_EX_LEFT
+    PUSHBUTTON      "ファイル名変更", IDC_OUTREPORT_RENAME, 240, 40, 60, 12, 0, WS_EX_LEFT
+    DEFPUSHBUTTON   "出力", IDOK, 75, 55, 50, 14, 0, WS_EX_LEFT
+    PUSHBUTTON      "キャンセル", IDCANCEL, 160, 55, 50, 14, 0, WS_EX_LEFT
+}
+
+// 案件情報ボタン起動時のダイアログ系 
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_ITEM DIALOG 0, 0, 323, 125
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "案件情報"
+FONT 10, "Meiryo"
+{
+    LTEXT           "以下のボタンから案件情報の入力、読込、出力を行ってください。", 0, 25, 10, 210, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "顧客情報", 0, 33, 32, 30, 9, SS_LEFT, WS_EX_LEFT
+    PUSHBUTTON      "入力", IDC_CUSTOMER_EDIT, 75, 26, 45, 20, 0, WS_EX_LEFT
+    PUSHBUTTON      "読込", IDC_CUSTOMER_READ, 144, 26, 45, 20, 0, WS_EX_LEFT
+    PUSHBUTTON      "出力", IDC_CUSTOMER_OUT, 210, 26, 45, 20, 0, WS_EX_LEFT
+    LTEXT           "点検者情報", 0, 33, 76, 40, 9, SS_LEFT, WS_EX_LEFT
+    PUSHBUTTON      "入力", IDC_MACHINE_EDIT, 75, 70, 45, 20, 0, WS_EX_LEFT
+    PUSHBUTTON      "読込", IDC_MACHINE_READ, 144, 70, 45, 20, 0, WS_EX_LEFT
+    PUSHBUTTON      "出力", IDC_MACHINE_OUT, 210, 70, 45, 20, 0, WS_EX_LEFT
+    DEFPUSHBUTTON   "OK", IDOK, 260, 100, 50, 14, 0, WS_EX_LEFT
+}
+
+// 体験版情報表示
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_INFTRIAL DIALOG 0, 0, 260, 100
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "体験版"
+FONT 10, "Meiryo"
+{
+    LTEXT           "本ソフトは体験版です。", 0, 15, 5, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "正規版と同等機能をお使い頂けますが、下記の制限がございます。", 0, 15, 15, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "・解析機能：同一データでは初回のみ実行可能（2回目以降は開けません。）", 0, 15, 25, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "・出力機能：管理番号／報告書はエクセル出力されますが、", 0, 15, 35, 210, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "保存・印刷はできません。", 0, 55, 45, 99, 9, SS_LEFT, WS_EX_LEFT
+    LTEXT           "正規版への切替を実施しますか？", 0, 15, 55, 210, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "  （[いいえ]を押すと、体験版を継続します。）", 0, 10, 65, 210, 10, SS_LEFT, WS_EX_LEFT
+    DEFPUSHBUTTON   "はい", IDOK, 135, 80, 50, 15, 0, WS_EX_LEFT
+    PUSHBUTTON      "いいえ", IDCANCEL, 200, 80, 50, 15, 0, WS_EX_LEFT
+}
+
+// 正規版への切替
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_CHGREG DIALOG 0, 0, 260, 80
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "正規版への切替"
+FONT 10, "Meiryo"
+{
+    LTEXT           "正規版への切替を行います。正規版への切替には、", 0, 15, 5, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "柳井電機工業株式会社が発行するライセンスキーが必要です。", 0, 15, 15, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "ライセンスキーをすでに入手されていますか？", 0, 15, 25, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "※ライセンスキー情報登録は管理者として実行する必要があります。", 0, 15, 40, 240, 10, SS_LEFT, WS_EX_LEFT
+    DEFPUSHBUTTON   "はい", IDOK, 135, 60, 50, 15, 0, WS_EX_LEFT
+    PUSHBUTTON      "いいえ", IDCANCEL, 200, 60, 50, 15, 0, WS_EX_LEFT
+}
+
+// 正規版への切替(ライセンスキー情報入力)
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_CHGREG_LKEYSET DIALOG 0, 0, 260, 95
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "正規版への切替(ライセンスキー情報入力)"
+FONT 10, "Meiryo"
+{
+    LTEXT           "正規版への切替を行います。", 0, 15, 5, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "ライセンスキー情報を入力して、[決定]を押して下さい。", 0, 15, 15, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "※本ツールを使用するPCにて実施して下さい。", 0, 15, 30, 240, 10, SS_LEFT, WS_EX_LEFT
+    LTEXT           "ライセンスキー情報", 0, 15, 45, 80, 10, SS_LEFT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYSET_LKEY, 20, 55, 200, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    DEFPUSHBUTTON   "決定", IDOK, 135, 75, 50, 15, 0, WS_EX_LEFT
+    PUSHBUTTON      "戻る", IDCANCEL, 200, 75, 50, 15, 0, WS_EX_LEFT
+}
+
+// 正規版への切替(ライセンスキー情報発行・情報入力)
+IDD_CHGREG_LKEYGET DIALOG 0, 0, 260, 170
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "正規版への切替(ライセンスキー情報発行)"
+FONT 10, "Meiryo"
+{
+    LTEXT           "ライセンスキー情報の発行手続きを行います。\n必要情報を入力の上、[確認]を押して下さい。", 0, 15, 5, 240, 20, SS_LEFT, WS_EX_LEFT
+    RTEXT           "会社名", 0, 15, 45, 50, 10, SS_RIGHT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYGET_COMPANY, 70, 43, 180, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    RTEXT           "所属", 0, 15, 65, 50, 10, SS_RIGHT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYGET_DEPARTMENT, 70, 63, 180, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    RTEXT           "氏名", 0, 15, 85, 50, 10, SS_RIGHT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYGET_FULLNAME, 70, 83, 180, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    RTEXT           "メールアドレス", 0, 15, 105, 50, 10, SS_RIGHT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYGET_EMAIL, 70, 103, 180, 12, ES_AUTOHSCROLL, WS_EX_LEFT
+    GROUPBOX        "契約", 0, 15, 120, 230, 24, 0, WS_EX_LEFT
+    AUTORADIOBUTTON "サブスクリプション", IDC_CHGREG_LKEYGET_SUBSCRIPTION, 24, 130, 75, 8, WS_GROUP, WS_EX_LEFT
+    AUTORADIOBUTTON "買取(保守有)", IDC_CHGREG_LKEYGET_PACKAGE, 105, 130, 55, 8, 0, WS_EX_LEFT
+    AUTORADIOBUTTON "買取(保守無)", IDC_CHGREG_LKEYGET_NO_SUPPORT, 180, 130, 55, 8, 0, WS_EX_LEFT
+    DEFPUSHBUTTON   "確認", IDOK, 135, 150, 50, 15, 0, WS_EX_LEFT
+    PUSHBUTTON      "戻る", IDCANCEL, 200, 150, 50, 15, 0, WS_EX_LEFT
+}
+
+// 正規版への切替(ライセンスキー情報発行・情報確認)
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_CHGREG_LKEYCONF DIALOG 0, 0, 260, 170
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "正規版への切替(ライセンスキー情報発行)"
+FONT 10, "Meiryo"
+{
+    LTEXT           "入力情報に間違いはありませんか？\n問題なければ、[決定]を押して下さい。\n今後の手続きについて担当よりご連絡いたします。", 0, 15, 5, 240, 30, SS_LEFT, WS_EX_LEFT
+    RTEXT           "会社名", 0, 15, 45, 50, 10, SS_RIGHT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYCONF_COMPANY, 70, 43, 180, 12, WS_DISABLED | ES_AUTOHSCROLL, WS_EX_LEFT
+    RTEXT           "所属", 0, 15, 65, 50, 10, SS_RIGHT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYCONF_DEPARTMENT, 70, 63, 180, 12, WS_DISABLED | ES_AUTOHSCROLL, WS_EX_LEFT
+    RTEXT           "氏名", 0, 15, 85, 50, 10, SS_RIGHT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYCONF_FULLNAME, 70, 83, 180, 12, WS_DISABLED | ES_AUTOHSCROLL, WS_EX_LEFT
+    RTEXT           "メールアドレス", 0, 15, 105, 50, 10, SS_RIGHT, WS_EX_LEFT
+    EDITTEXT        IDC_CHGREG_LKEYCONF_EMAIL, 70, 103, 180, 12, WS_DISABLED | ES_AUTOHSCROLL, WS_EX_LEFT
+    GROUPBOX        "契約", 0, 15, 120, 230, 24, 0, WS_EX_LEFT
+    AUTORADIOBUTTON "サブスクリプション", IDC_CHGREG_LKEYGET_SUBSCRIPTION, 24, 130, 75, 8, WS_DISABLED | WS_GROUP, WS_EX_LEFT
+    AUTORADIOBUTTON "買取(保守有)", IDC_CHGREG_LKEYGET_PACKAGE, 105, 130, 55, 8, WS_DISABLED, WS_EX_LEFT
+    AUTORADIOBUTTON "買取(保守無)", IDC_CHGREG_LKEYGET_NO_SUPPORT, 180, 130, 55, 8, WS_DISABLED, WS_EX_LEFT
+    DEFPUSHBUTTON   "決定", IDOK, 135, 150, 50, 15, 0, WS_EX_LEFT
+    PUSHBUTTON      "戻る", IDCANCEL, 200, 150, 50, 15, 0, WS_EX_LEFT
+}
+
+
+//
+// Bitmap Resources
+//
+IDB_BITMAP_COLORPATTERN BITMAP DISCARDABLE "ColorPattern.bmp"
+// カラーパターン(白黒)
+IDB_BITMAP_COLORPATTERN2 BITMAP DISCARDABLE "ColorPattern2.bmp"
