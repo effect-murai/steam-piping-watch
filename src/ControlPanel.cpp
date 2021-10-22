@@ -476,6 +476,14 @@ void ControlPanel::enableAutoLinkButton() {
 	this->m_StatusPanel->enableAutoLinkButton();
 }
 
+//(2021/10/22YM)テスト　高温部検出ボタン追加
+/**
+ * 高温部検出・表示ボタンの有効化
+ */
+void ControlPanel::enableHighTempButton(){
+	this->m_StatusPanel->enableHighTempButton();
+}
+
 /**
  * ボタンの有効化
  */

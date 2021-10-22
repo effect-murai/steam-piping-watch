@@ -60,6 +60,12 @@ public:
 	 */
 	void enableAutoLinkButton();
 
+	// (2021/10/22YM)テスト　高温部検出ボタン追加
+	/**
+	 * 高温部検出ボタンの有効化
+	 */
+	void enableHighTempButton();
+
 	/**
 	 * ボタンの有効化
 	 */
@@ -153,6 +159,9 @@ private:
 	PushButton *button_hotspotlink;
 	// 色合い調整
 	ColorPanel *m_ColorPanel;
+
+	// (2021/10/22YM)テスト　高温部検出ボタン追加
+	PushButton *button_HighTemp;
 
 	// インジケータ
 	Label *m_Label_Home;

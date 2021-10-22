@@ -304,7 +304,7 @@ int ResultData::detectHotspotImpl(int id, POINT **hotspots, float threshold) {
 							int dy = l->y - pt.y;
 							// ホットスポット間の距離が32ピクセル未満の場合
 							// 同じホットスポットと判定する。
-							if (dx * dx + dy * dy < 1024) {
+							if (dx * dx + dy * dy < 512) {
 								sameHotspot = true;
 								break;
 							}

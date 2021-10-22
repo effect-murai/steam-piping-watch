@@ -154,6 +154,12 @@ public:
 	 */
 	void enableAutoLinkButton();
 
+	//(2021/10/22YM)テスト　高温部検出ボタン追加
+	/**
+	 * ホットスポット自動リンクボタンの有効化
+	 */
+	void enableHighTempButton();
+
 	/**
 	 * ボタンの有効化
 	 */

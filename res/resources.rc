@@ -298,6 +298,8 @@ BEGIN
 	
 	IDS_UNIMPLEMENTED			"まだ実装されていないよ"
 	IDS_SORRY					"残念"
+
+	IDS_TEST_HIGHTEMP			"高温部検出・表示"
 END
 
 //

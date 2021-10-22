@@ -130,6 +130,8 @@
 #define IDS_ITEM_OUTPUT_TITLE                     410
 #define IDS_HOTSPOT_AUTOLINK                      450
 
+#define IDS_TEST_HIGHTEMP                         480
+
 #define IDS_SELECT_PICTURE_TITLE                  501
 #define IDS_PANEL_RETURN                          502
 #define IDS_PANEL_HOME                            503

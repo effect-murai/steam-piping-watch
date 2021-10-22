@@ -1476,6 +1476,9 @@ void MainWindow::button_SetFolderOnClicked(void) {
 	// 案件情報ボタンを有効化する
 	controlPanel->enableItemButton();
 
+	//(2021/10/22YM)テスト　高温部検出ボタンを有効化する
+	controlPanel->enableHighTempButton();
+
 	// 画面右の日付および枚数表示を更新
 	controlPanel->setInfoFirstDate(result->getFirstDateString());
 	controlPanel->setInfoDataCount(result->getDataCountString());

@@ -57,6 +57,11 @@ StatusPanel::StatusPanel(GroupBox *pWnd) {
 			// (2017/8/1YM)特徴点検出ボタンの位置ずらす
 			Resource::getString(IDS_HOTSPOT_AUTOLINK), WS_VISIBLE, 10, 130, 150,
 			36, this->m_pWnd);
+	
+	// (2021/10/22YM)テスト 高温部検出表示ボタンの追加
+	this->button_HighTemp = new PushButton(
+			Resource::getString(IDS_TEST_HIGHTEMP), WS_VISIBLE, 10, 850, 150, 36,
+			this->m_pWnd);
 
 	// 色合い調整
 	// (2016/12/28YM)ホットスポット自動リンクボタン追加に伴いY座標を下にずらす
@@ -104,6 +109,9 @@ StatusPanel::~StatusPanel() {
 	// (2016/12/28YM)ホットスポット自動リンクボタン追加
 	delete this->button_hotspotlink;
 
+	//(2021/10/22YM)テスト　高温部検出ボタン追加
+	delete this->button_HighTemp;
+
 	delete this->m_ColorPanel;
 
 	delete this->m_Label_Home;
@@ -137,6 +145,9 @@ void StatusPanel::init() {
 	this->button_itemOutput->disable();
 	// (2016/12/28YM)ホットスポット自動リンクボタン追加
 	this->button_hotspotlink->disable();
+
+	// (2021/10/22YM)テスト 高温部検出表示ボタンの追加
+	this->button_HighTemp->disable();
 }
 
 /**
@@ -155,6 +166,9 @@ void StatusPanel::setFont(HFONT hFont) {
 	this->button_itemOutput->setFont(hFont);
 	// (2016/12/28YM)ホットスポット自動リンクボタン追加
 	this->button_hotspotlink->setFont(hFont);
+
+	// (2021/10/22YM)テスト 高温部検出表示ボタンの追加
+	this->button_HighTemp->setFont(hFont);
 
 	this->edit_hotspotdisplay->setFont(hFont);
 	this->hotspotdisplay->setFont(hFont);
@@ -204,6 +218,14 @@ void StatusPanel::enableItemButton() {
  */
 void StatusPanel::enableAutoLinkButton() {
 	this->button_hotspotlink->enable();
+}
+
+//(2021/10/22YM)テスト　高温部検出ボタン追加
+/**
+ * 高温部検出ボタンの有効化
+ */
+void StatusPanel::enableHighTempButton(){
+	this->button_HighTemp->enable();
 }
 
 /**
